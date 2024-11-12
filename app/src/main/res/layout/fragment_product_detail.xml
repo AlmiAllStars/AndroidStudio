@@ -1,0 +1,171 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <!-- Toolbar personalizada (sin cambios) -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- Imagen del producto (sin cambios) -->
+    <ImageView
+        android:id="@+id/product_image"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Descripción del producto (sin cambios) -->
+    <TextView
+        android:id="@+id/product_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="16dp" />
+
+    <!-- CardView que engloba los detalles y botones de compra -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:elevation="4dp"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Columna izquierda con detalles -->
+            <LinearLayout
+                android:id="@+id/dynamic_content_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <!-- Este contenedor se rellenará dinámicamente -->
+            </LinearLayout>
+
+
+            <!-- Columna central con títulos y precios -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <!-- Título y precio de "Comprar" -->
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Comprar"
+                    android:textStyle="bold"
+                    android:textColor="@color/light_green"
+                    android:gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/buy_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="39.99€"
+                    android:textColor="@android:color/black"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Título y precio de "Pruebalo" -->
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pruebalo"
+                    android:textStyle="bold"
+                    android:textColor="@color/blue"
+                    android:gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_marginLeft="22dp"
+                    android:id="@+id/try_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5€/semana"
+                    android:textColor="@android:color/black"
+                    android:gravity="center_horizontal" />
+            </LinearLayout>
+
+            <!-- Columna derecha con los botones -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <!-- Botón "Comprar" a la derecha -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/buy_button"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/carritoverde"
+                    android:layout_marginEnd="32dp"
+                    />
+
+                <!-- Espacio entre botones -->
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp" />
+
+                <!-- Botón "Pruebalo" a la derecha -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/try_button"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/pruebalo"
+                    android:layout_marginEnd="32dp"
+                    />
+
+                <!-- Espacio entre botones y botón de favoritos -->
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp" />
+
+                <!-- Botón "Favoritos" centrado debajo -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/wishlist_button"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/corazonn"
+                    android:layout_marginRight="40dp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

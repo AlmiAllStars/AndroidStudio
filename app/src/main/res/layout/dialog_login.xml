@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <ImageButton
+            android:id="@+id/close_account_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/salir"
+        android:contentDescription="Cerrar"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_gravity="end"
+        android:layout_marginBottom="8dp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/logo_image_view"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logojuegalmi"
+        android:contentDescription="Logo"
+        android:layout_gravity="center"
+        android:maxHeight="80dp"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="-30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Iniciar Sesión"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="center" />
+
+    <EditText
+        android:id="@+id/edit_text_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Correo Electrónico"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="4dp" />
+
+    <EditText
+        android:id="@+id/edit_text_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:layout_marginTop="4dp" />
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="INICIAR SESIÓN"
+        android:textAllCaps="true"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:textColor="@android:color/white"
+        android:layout_margin="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿NO RECUERDO MI CONTRASEÑA?"
+        android:layout_gravity="center"
+        android:textSize="17dp"
+        android:padding="8dp"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Nuevo en Juegalmi?"
+        android:layout_gravity="center"
+        android:padding="8dp" />
+
+    <Button
+        android:id="@+id/button_create_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CREAR UNA CUENTA"
+        android:textAllCaps="true"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:textColor="@android:color/white" />
+
+    <!--<Button
+        android:id="@+id/button_login_google"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="INICIAR SESIÓN CON GOOGLE"
+        android:textAllCaps="true"
+        android:backgroundTint="@android:color/holo_purple"
+        android:textColor="@android:color/white" />-->
+</LinearLayout>

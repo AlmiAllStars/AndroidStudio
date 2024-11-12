@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
+  <!-- Fondo cuadrado gris con opacidad -->
+  <path
+      android:pathData="M0,0L512,0L512,512L0,512Z"
+      android:fillColor="#4D000000" />
+
+  <!-- Flecha blanca -->
+  <path
+      android:pathData="M184,112L328,256L184,400"
+  android:strokeLineJoin="round"
+  android:strokeWidth="35"
+  android:fillColor="#00000000"
+  android:strokeColor="#FFFFFF"
+  android:strokeLineCap="round"/>
+</vector>

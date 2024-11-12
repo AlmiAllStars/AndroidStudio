@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">JuegalmiApp</string>
+    <string name="notification_icon">Ícono de notificación</string>
+    <string name="profile_icon">Ícono de perfil</string>
+    <string name="cart_icon">Ícono de carrito</string>
+    <string name="notifications_icon">Ícono de notificaciones</string>
+
+    <string name="notification_1">Nuevo mensaje</string>
+    <string name="notification_2">Pedido enviado</string>
+    <string name="notification_3">Actualización disponible</string>
+    <string name="notification_4">Amistad aceptada</string>
+    <string name="nombre_del_producto">Nombre del producto</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="google_maps_key">AIzaSyC_2u80oce4klMu1UxPiNgUjK_u42gfo28</string>
+
+    <string-array name="gravedad_opciones">
+        <item>Baja</item>
+        <item>Media</item>
+        <item>Alta</item>
+    </string-array>
+
+</resources>

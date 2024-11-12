@@ -1,0 +1,129 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white">
+
+        <!-- TabLayout para alternar entre Consolas y Dispositivos -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            app:tabTextColor="@color/blue"
+            app:tabSelectedTextColor="@android:color/holo_blue_dark"
+            app:tabIndicatorColor="@android:color/holo_blue_dark" />
+
+        <!-- RecyclerView para la lista de Consolas o Dispositivos -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_reparations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:paddingBottom="8dp" />
+
+        <!-- Selector de Modelo (Spinner), oculto inicialmente -->
+        <LinearLayout
+            android:id="@+id/layout_selector_modelo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Modelo"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_gravity="center_vertical" />
+
+            <Spinner
+                android:id="@+id/spinner_model_selection"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="16dp"
+                android:layout_gravity="center_vertical"
+                android:spinnerMode="dialog" />
+        </LinearLayout>
+
+        <!-- Contenedor para el CardView de Detalles de Reparación, oculto inicialmente -->
+        <FrameLayout
+            android:id="@+id/container_detalles_reparacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <!-- CardView para Preguntas Frecuentes -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_preguntas_frecuentes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@android:color/white"
+            android:elevation="4dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Preguntas Frecuentes"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¿Cuánto tiempo lleva una reparación?"
+                    android:textSize="14sp"
+                    android:layout_marginTop="8dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Generalmente, una reparación puede tardar entre 3 a 7 días, dependiendo de la disponibilidad de piezas."
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@android:color/darker_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¿Qué garantía tienen las reparaciones?"
+                    android:textSize="14sp"
+                    android:layout_marginTop="8dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ofrecemos una garantía de 90 días para todas las reparaciones realizadas en nuestra tienda."
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@android:color/darker_gray" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

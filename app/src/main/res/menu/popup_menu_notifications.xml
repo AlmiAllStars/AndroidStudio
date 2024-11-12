@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- popup_menu_notifications.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/notification_1"
+        android:title="Tienes un nuevo mensaje" />
+    <item
+        android:id="@+id/notification_2"
+        android:title="Tu pedido ha sido enviado" />
+    <item
+        android:id="@+id/notification_3"
+        android:title="Actualización del sistema disponible" />
+    <item
+        android:id="@+id/notification_4"
+        android:title="Solicitud de amistad aceptada" />
+</menu>

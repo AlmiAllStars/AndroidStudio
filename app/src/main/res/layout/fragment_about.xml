@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/primeraabout"
+                android:contentDescription="Juan Pérez"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/history_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nuestra Historia"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/history_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="En Juegalmi, somos apasionados de la tecnología y el entretenimiento. Nos dedicamos a la venta y alquiler de videojuegos, reparación de dispositivos y mucho más."
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="8dp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/values_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nuestros Valores"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:columnCount="2"
+                android:rowCount="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/card_background"
+                    android:padding="16dp"
+                    android:text="Innovación\nNos reinventamos constantemente"
+                    android:textAlignment="center"
+                    android:textColor="#333"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/card_background"
+                    android:padding="16dp"
+                    android:text="Calidad\nOfrecemos el mejor servicio"
+                    android:textAlignment="center"
+                    android:textColor="#333"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/card_background"
+                    android:padding="16dp"
+                    android:text="Atención al Cliente\nSiempre cerca de ti"
+                    android:textAlignment="center"
+                    android:textColor="#333"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/card_background"
+                    android:padding="16dp"
+                    android:text="Sostenibilidad\nComprometidos con el medio ambiente"
+                    android:textAlignment="center"
+                    android:textColor="#333"
+                    android:textSize="18sp" />
+            </GridLayout>
+
+            <TextView
+                android:id="@+id/team_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Conoce a Nuestro Equipo"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- Tarjeta 1 -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_weight="1"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="120dp"
+                                android:layout_height="110dp"
+                                android:src="@drawable/team2"
+                                android:scaleType="centerCrop"
+                                android:contentDescription="Juan Pérez"
+                                android:background="@drawable/circular_image"
+                                android:clipToOutline="true"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Juan Pérez"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CEO"
+                                android:textSize="14sp"
+                                android:gravity="center" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Tarjeta 2 -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_weight="1"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="110dp"
+                                android:layout_height="110dp"
+                                android:src="@drawable/team1"
+                                android:scaleType="centerCrop"
+                                android:contentDescription="María García"
+                                android:background="@drawable/circular_image"
+                                android:clipToOutline="true"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="María García"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CTO"
+                                android:textSize="14sp"
+                                android:gravity="center" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <!-- Tarjeta 3 -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_weight="1"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="110dp"
+                                android:layout_height="110dp"
+                                android:src="@drawable/team3"
+                                android:scaleType="centerCrop"
+                                android:contentDescription="Carlos López"
+                                android:background="@drawable/circular_image"
+                                android:clipToOutline="true"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Carlos López"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CMO"
+                                android:textSize="14sp"
+                                android:gravity="center" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Tarjeta 4 -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_weight="1"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="110dp"
+                                android:layout_height="110dp"
+                                android:src="@drawable/team4"
+                                android:scaleType="centerCrop"
+                                android:contentDescription="Ana Martínez"
+                                android:background="@drawable/circular_image"
+                                android:clipToOutline="true"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ana Martínez"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="COO"
+                                android:textSize="14sp"
+                                android:gravity="center" />
+
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/need"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¿Necesitas Algo? Estamos aquí"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="25dp" />
+
+                <TextView
+                    android:id="@+id/question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Para cualquier duda o soporte, contactanos."
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="25dp"
+
+                    />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button_previous"
+                    android:layout_width="330dp"
+                    android:layout_height="50dp"
+                    android:text="Contactar"
+                    android:background="@color/blue"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="25dp"
+                     />
+
+                <!-- Iconos de redes sociales -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp">
+
+                    <!-- Facebook -->
+                    <ImageView
+                        android:id="@+id/facebook_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/facebook"
+                        android:layout_marginEnd="30dp"/>
+
+                    <!-- Instagram -->
+                    <ImageView
+                        android:id="@+id/instagram_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/instagram"
+                        android:layout_marginEnd="30dp"/>
+
+                    <!-- Twitter -->
+                    <ImageView
+                        android:id="@+id/twitter_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/twitter"
+                        android:layout_marginEnd="30dp"/>
+
+                    <!-- LinkedIn -->
+                    <ImageView
+                        android:id="@+id/linkedin_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/linkedin"
+                        android:layout_marginEnd="30dp"/>
+                </LinearLayout>
+
+
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>

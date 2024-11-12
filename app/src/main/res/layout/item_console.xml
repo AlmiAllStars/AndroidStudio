@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="3dp">
+
+    <ImageView
+        android:id="@+id/console_image"
+        android:layout_width="125dp"
+    android:layout_height="175dp"
+    android:scaleType="centerCrop"
+    android:layout_margin="0dp" />
+
+    <TextView
+        android:id="@+id/console_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:paddingTop="2dp"
+        android:layout_margin="0dp" />
+
+    <TextView
+        android:id="@+id/console_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:textColor="@android:color/black"
+        android:paddingTop="2dp"
+        android:layout_margin="0dp" />
+</LinearLayout>

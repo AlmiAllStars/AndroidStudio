@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/casa"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/nav_gallery"
+        android:icon="@drawable/gallery"
+        android:title="Galería" />
+
+    <item
+        android:id="@+id/nav_stores"
+        android:icon="@drawable/store"
+        android:title="Tiendas" />
+
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/about"
+        android:title="About us" />
+</menu>

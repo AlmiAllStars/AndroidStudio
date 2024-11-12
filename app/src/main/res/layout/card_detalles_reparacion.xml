@@ -1,0 +1,78 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:padding="16dp"
+    android:elevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detalles de la Reparación"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="25dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descripción del Problema"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/black" />
+
+        <EditText
+            android:id="@+id/et_descripcion_problema"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Escriba el problema"
+            android:inputType="textMultiLine"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gravedad del Problema"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/black" />
+
+        <Spinner
+            android:id="@+id/spinner_gravedad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email de Contacto"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/black" />
+
+        <EditText
+            android:id="@+id/et_email_contacto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="email@ejemplo.com"
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="4dp" />
+
+        <Button
+            android:id="@+id/btn_enviar_reparacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="ENVIAR SOLICITUD DE REPARACIÓN"
+            android:backgroundTint="@android:color/holo_green_light"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
