@@ -3,6 +3,7 @@ package com.almi.juegaalmiapp.fragmentos;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.almi.juegaalmiapp.ClienteService;
 import com.almi.juegaalmiapp.R;
 import com.almi.juegaalmiapp.viewmodel.SharedViewModel;
 
@@ -62,62 +65,136 @@ public class EditFieldDialogFragment extends DialogFragment {
         saveButton.setOnClickListener(v -> {
             String newValue = editTextField.getText().toString().trim();
             if (!newValue.isEmpty()) {
-                Toast.makeText(getContext(), "Nuevo valor guardado: " + newValue, Toast.LENGTH_SHORT).show();
-
-                switch (fieldTitle) {
-                    case "Editar Nombre":
-                        sharedViewModel.setName(newValue);
-                        break;
-                    case "Editar Apellido":
-                        sharedViewModel.setSurname(newValue);
-                        break;
-                    case "Editar Teléfono":
-                        sharedViewModel.setPhone(newValue);
-                        break;
-                    case "Editar Dirección":
-                        sharedViewModel.setAddress(newValue);
-                        break;
-                    case "Editar Código Postal":
-                        sharedViewModel.setPostalCode(newValue);
-                        break;
-                    case "Editar Contraseña":
-                        sharedViewModel.setPassword(newValue);
-                        break;
+                if (validarCampo(fieldTitle, newValue)) {
+                    actualizarDatoUsuario(newValue); // Llamada al servidor
+                    actualizarSharedViewModel(newValue); // Actualizar ViewModel localmente
+                    actualizarSharedPreferences(newValue); // Persistir en local
+                    dismiss();
+                } else {
+                    Toast.makeText(getContext(), getErrorMessage(fieldTitle), Toast.LENGTH_SHORT).show();
                 }
-
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                // Guarda el nuevo valor
-                switch (fieldTitle) {
-                    case "Editar Nombre":
-                        editor.putString("name", newValue);
-                        break;
-                    case "Editar Apellido":
-                        editor.putString("surname", newValue);
-                        break;
-                    case "Editar Teléfono":
-                        editor.putString("phone", newValue);
-                        break;
-                    case "Editar Dirección":
-                        editor.putString("address", newValue);
-                        break;
-                    case "Editar Código Postal":
-                        editor.putString("postalCode", newValue);
-                        break;
-                    case "Editar Contraseña":
-                        editor.putString("password", newValue);
-                        break;
-                }
-                editor.apply();
-
-                dismiss();
             } else {
                 Toast.makeText(getContext(), "El campo no puede estar vacío", Toast.LENGTH_SHORT).show();
             }
         });
 
+
         return view;
+    }
+
+    private String getErrorMessage(String campo) {
+        switch (campo) {
+            case "Editar Nombre":
+            case "Editar Apellido":
+                return "Debe contener solo letras y al menos 2 caracteres.";
+            case "Editar Teléfono":
+                return "Debe contener entre 7 y 15 dígitos.";
+            case "Editar Dirección":
+                return "Debe contener al menos 5 caracteres.";
+            case "Editar Código Postal":
+                return "Debe contener entre 4 y 5 dígitos.";
+            case "Editar Contraseña":
+                return "Debe tener entre 8 y 20 caracteres, incluyendo al menos una letra y un número.";
+            default:
+                return "Valor no válido.";
+        }
+    }
+
+
+    private void actualizarDatoUsuario(String newValue) {
+        ClienteService clienteService = new ClienteService(requireContext());  // Crear instancia pasando el contexto
+        String campo = getCampoPorTitulo(fieldTitle);
+
+        if (campo != null) {
+            clienteService.actualizarDatoUsuario(campo, newValue);
+            Toast.makeText(getContext(), "Actualizado en el servidor.", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.e("EditFieldDialog", "Campo no encontrado para el título: " + fieldTitle);
+        }
+    }
+
+
+    private void actualizarSharedViewModel(String newValue) {
+        switch (fieldTitle) {
+            case "Editar Nombre":
+                sharedViewModel.setName(newValue);
+                break;
+            case "Editar Apellido":
+                sharedViewModel.setSurname(newValue);
+                break;
+            case "Editar Teléfono":
+                sharedViewModel.setPhone(newValue);
+                break;
+            case "Editar Dirección":
+                sharedViewModel.setAddress(newValue);
+                break;
+            case "Editar Código Postal":
+                sharedViewModel.setPostalCode(newValue);
+                break;
+            case "Editar Contraseña":
+                sharedViewModel.setPassword(newValue);
+                break;
+        }
+    }
+
+    private boolean validarCampo(String campo, String valor) {
+        String regex;
+
+        switch (campo) {
+            case "Editar Nombre":
+            case "Editar Apellido":
+                regex = "^[a-zA-Z\\s]{2,}$";
+                break;
+            case "Editar Teléfono":
+                regex = "^\\d{7,15}$";
+                break;
+            case "Editar Dirección":
+                regex = "^[a-zA-Z0-9\\s,.-]{5,}$";
+                break;
+            case "Editar Código Postal":
+                regex = "^\\d{4,5}$";
+                break;
+            case "Editar Contraseña":
+                regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$";
+                break;
+            default:
+                return true; // Si el campo no requiere validación
+        }
+
+        return valor.matches(regex);
+    }
+
+
+    private void actualizarSharedPreferences(String newValue) {
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        String campo = getCampoPorTitulo(fieldTitle);
+
+        if (campo != null) {
+            editor.putString(campo, newValue);
+            editor.apply();
+            Toast.makeText(getContext(), "Guardado localmente.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getCampoPorTitulo(String title) {
+        switch (title) {
+            case "Editar Nombre":
+                return "name";
+            case "Editar Apellido":
+                return "surname";
+            case "Editar Teléfono":
+                return "phone";
+            case "Editar Dirección":
+                return "address";
+            case "Editar Código Postal":
+                return "postalCode";
+            case "Editar Contraseña":
+                return "password";
+            default:
+                return null;
+        }
     }
 
     @Override

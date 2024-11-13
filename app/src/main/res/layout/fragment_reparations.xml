@@ -8,6 +8,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@android:color/white">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_active_repairs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
 
         <!-- TabLayout para alternar entre Consolas y Dispositivos -->
         <com.google.android.material.tabs.TabLayout

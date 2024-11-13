@@ -44,14 +44,14 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
                 .into(holder.gameImageView);
 
         holder.itemView.setOnClickListener(v -> {
-            String productId = String.valueOf(game.getId()); // Obtener el ID del producto
+            String productId = String.valueOf(game.getId());
             AppCompatActivity activity = (AppCompatActivity) v.getContext();
             ProductDetailFragment fragment = ProductDetailFragment.newInstance(productId);
 
             // Reemplazar el fragmento actual con el ProductDetailFragment
             activity.getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment)  // Asegúrate de tener un contenedor de fragmentos en tu layout
-                    .addToBackStack(null) // Agregar a la pila para permitir navegación hacia atrás
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
                     .commit();
         });
     }

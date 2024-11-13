@@ -1,37 +1,70 @@
 package com.almi.juegaalmiapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.Manifest;
+
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.almi.juegaalmiapp.adaptadores.NotificationAdapter;
-import com.almi.juegaalmiapp.fragmentos.AboutFragment;
-import com.almi.juegaalmiapp.fragmentos.AccountFragment;
-import com.almi.juegaalmiapp.fragmentos.GalleryFragment;
-import com.almi.juegaalmiapp.fragmentos.HomeFragment;
-import com.almi.juegaalmiapp.fragmentos.ListaPedidosFragment;
-import com.almi.juegaalmiapp.fragmentos.LoginDialogFragment;
-import com.almi.juegaalmiapp.fragmentos.ProductDetailFragment;
-import com.almi.juegaalmiapp.fragmentos.StoresFragment;
+import com.almi.juegaalmiapp.fragmentos.*;
 import com.almi.juegaalmiapp.modelo.Client;
+import com.almi.juegaalmiapp.modelo.Game;
 import com.almi.juegaalmiapp.modelo.Notification;
 import com.almi.juegaalmiapp.viewmodel.SharedViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements LoginDialogFragment.LoginListener {
 
@@ -40,6 +73,15 @@ public class MainActivity extends AppCompatActivity implements LoginDialogFragme
     private ImageView iconProfile, iconCart, iconNotifications;
     private SharedViewModel sharedViewModel;
     private SharedPreferences sharedPreferences;
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private ShakeDetector shakeDetector;
+    private List<Game> recentGames = new ArrayList<>(); // Almacena la lista de juegos recientes
+    private static final int REQUEST_CAMERA_PERMISSION = 100;
+    private ActivityResultLauncher<Intent> takePictureLauncher;
+    private Uri photoUri;
+    private ImageView userIcon;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements LoginDialogFragme
                 Log.e("MainActivity", "No se encontraron datos del cliente.");
             }
         }
+
 
         updateUI(sharedPreferences.getBoolean("isLoggedIn", false));
 
@@ -134,6 +177,102 @@ public class MainActivity extends AppCompatActivity implements LoginDialogFragme
                 loginDialog.show(getSupportFragmentManager(), "loginDialog");
             }
         });
+
+        // Configuración del detector de vibración
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager != null) {
+            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            shakeDetector = new ShakeDetector(this::openRandomGameDetail);
+        }
+        // Inicializar el launcher para tomar la foto
+        takePictureLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        userIcon.setImageURI(photoUri); // Mostrar la imagen en la interfaz
+
+                        // Subir la imagen al servidor
+                        uploadPictureToServer(photoUri);
+                    } else {
+                        Toast.makeText(this, "Captura de foto cancelada", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (accelerometer != null) {
+            sensorManager.registerListener(shakeDetector, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(shakeDetector);
+    }
+
+    private void openRandomGameDetail() {
+        // Log para confirmar que se detecta la sacudida
+        Log.d("MainActivity", "Shake detected! Applying animation.");
+
+        // Cargar la animación desde el XML y aplicarla al elemento deseado (por ejemplo, iconNotifications)
+
+
+
+            Random random = new Random();
+            int randomNumber = random.nextInt(51) + 10;
+
+            String productId = String.valueOf(randomNumber);
+
+            ProductDetailFragment fragment = ProductDetailFragment.newInstance(productId);
+            fragment.setAnimate(true);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+    }
+
+    private Bitmap getResizedBitmap(Uri photoUri, int maxWidth, int maxHeight) throws IOException {
+        InputStream inputStream = getContentResolver().openInputStream(photoUri);
+        Bitmap originalBitmap = BitmapFactory.decodeStream(inputStream);
+
+        // Obtener las proporciones originales
+        int width = originalBitmap.getWidth();
+        int height = originalBitmap.getHeight();
+
+        float aspectRatio = (float) width / (float) height;
+
+        // Calcular nuevo tamaño manteniendo la proporción
+        if (width > maxWidth || height > maxHeight) {
+            if (width > height) {
+                width = maxWidth;
+                height = Math.round(width / aspectRatio);
+            } else {
+                height = maxHeight;
+                width = Math.round(height * aspectRatio);
+            }
+        }
+
+        return Bitmap.createScaledBitmap(originalBitmap, width, height, true);
+    }
+
+    private File bitmapToFile(Bitmap bitmap) throws IOException {
+        File file = new File(getCacheDir(), "resized_image.jpg");
+        FileOutputStream out = new FileOutputStream(file);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out); // Comprimir al 80% para más reducción
+        out.flush();
+        out.close();
+        return file;
+    }
+
+
+
+    public void setRecentGames(List<Game> games) {
+        this.recentGames = games;
     }
 
     private void updateUI(boolean isLoggedIn) {
@@ -146,11 +285,13 @@ public class MainActivity extends AppCompatActivity implements LoginDialogFragme
         }
     }
 
+
+
     private void showUserMenu(View anchor) {
         View menuView = LayoutInflater.from(this).inflate(R.layout.menu_user, null);
         PopupWindow popupWindow = new PopupWindow(menuView,
                 (int) (getResources().getDisplayMetrics().widthPixels * 0.85),
-                (int) (getResources().getDisplayMetrics().heightPixels * 0.6),
+                (int) (getResources().getDisplayMetrics().heightPixels * 0.70),
                 true);
 
         TextView userNameTextView = menuView.findViewById(R.id.user_name);
@@ -199,6 +340,8 @@ public class MainActivity extends AppCompatActivity implements LoginDialogFragme
             updateUI(false);
             popupWindow.dismiss();
         });
+        userIcon = menuView.findViewById(R.id.user_icon);
+        userIcon.setOnClickListener(v -> requestCameraPermission());
     }
 
     private void showNotificationsPopup(View view) {
@@ -234,6 +377,100 @@ public class MainActivity extends AppCompatActivity implements LoginDialogFragme
             getSupportFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void requestCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+        } else {
+            openCamera();
+        }
+    }
+
+    private void openCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Log.d("CameraDebug", "Intent encontrado: " + (takePictureIntent.resolveActivity(getPackageManager()) != null));
+
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                Log.e("MainActivity", "Error al crear el archivo de imagen", ex);
+            }
+
+            if (photoFile != null) {
+                photoUri = FileProvider.getUriForFile(this, "com.almi.juegaalmiapp.fileprovider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                takePictureLauncher.launch(takePictureIntent);
+            } else {
+                Toast.makeText(this, "No se pudo crear el archivo para guardar la imagen", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "No se encontró una aplicación de cámara", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void uploadPictureToServer(Uri photoUri) {
+        try {
+            // Redimensionar la imagen
+            Bitmap resizedBitmap = getResizedBitmap(photoUri, 800, 800); // Tamaño máximo: 800x800
+            File resizedFile = bitmapToFile(resizedBitmap);
+
+            // Crear MultipartBody.Part
+            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), resizedFile);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("picture", resizedFile.getName(), requestBody);
+
+            // Obtener el token
+            String token = "Bearer " + new ClienteService(this).getToken();
+
+            // Llamar al servicio
+            ApiService apiService = ApiClient.getClient().create(ApiService.class);
+            Call<Void> call = apiService.uploadClientPicture(token, body);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(MainActivity.this, "Imagen subida con éxito", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.e("MainActivity", "Error en la respuesta: " + response.message());
+                        Toast.makeText(MainActivity.this, "Error del servidor: " + response.message(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("MainActivity", "Error en la red: " + t.getMessage(), t);
+                    Toast.makeText(MainActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } catch (IOException e) {
+            Toast.makeText(this, "Error al procesar la imagen: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("MainActivity", "Error redimensionando la imagen", e);
+        }
+    }
+
+
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return File.createTempFile(imageFileName, ".jpg", storageDir);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
+            } else {
+                Toast.makeText(this, "Permiso de cámara requerido para tomar fotos", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

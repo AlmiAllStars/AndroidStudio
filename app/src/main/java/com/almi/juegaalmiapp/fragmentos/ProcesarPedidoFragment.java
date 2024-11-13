@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.almi.juegaalmiapp.ApiClient;
 import com.almi.juegaalmiapp.ApiService;
@@ -186,11 +187,9 @@ public class ProcesarPedidoFragment extends Fragment {
     }
 
     public void procesarCarrito() {
-        // Obtener los elementos del carrito
         List<CarritoItem> cartItems = carritoService.getCartItems();
         List<Map<String, Object>> operations = new ArrayList<>();
 
-        // Crear las operaciones dinámicamente
         for (CarritoItem item : cartItems) {
             Map<String, Object> operation = new HashMap<>();
             operation.put("id_product", item.getId());
@@ -200,25 +199,20 @@ public class ProcesarPedidoFragment extends Fragment {
                 operation.put("quantity", item.getCantidad());
             } else if ("rent".equals(item.getOperationType())) {
                 operation.put("rental_time", 5);
-                operation.put("price", 15.0); // Precio fijo para alquiler
+                operation.put("price", 15.0);
             } else {
-                operation.put("price", item.getPrice()); // Precio normal para compra
+                operation.put("price", item.getPrice());
             }
-
             operations.add(operation);
         }
 
-        // Crear el cuerpo de la solicitud
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("worker_id", 1); // ID del trabajador
+        requestBody.put("worker_id", 1);
         requestBody.put("operations", operations);
 
-        // Obtener el token del ClienteService
         String token = "Bearer " + clienteServicio.getToken();
-
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
 
-        //ponemos por consola a ver que se esta enviando
         Log.d("ProcesarCarrito", "Enviando: " + requestBody.toString());
 
         apiService.procesarCarrito(token, requestBody).enqueue(new Callback<Void>() {
@@ -226,7 +220,13 @@ public class ProcesarPedidoFragment extends Fragment {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Log.d("ProcesarCarrito", "Operaciones procesadas correctamente");
-                    carritoService.limpiarCarrito(); // Limpiar el carrito después de procesar
+                    carritoService.limpiarCarrito();
+
+                    // Mostrar el toast
+                    Toast.makeText(getContext(), "Pedido tramitado", Toast.LENGTH_SHORT).show();
+
+                    // Cerrar el fragmento actual
+                    requireActivity().getSupportFragmentManager().popBackStack();
                 } else {
                     Log.e("ProcesarCarrito", "Error al procesar: " + response.code());
                 }

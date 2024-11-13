@@ -44,7 +44,7 @@ public class StoresFragment extends Fragment implements OnMapReadyCallback {
     private TextView tvNearestStoreDistance;
     private Polyline routePolyline;
 
-    private final LatLng sanIgnacioLocation = new LatLng(43.268667, -2.946021);
+    private final LatLng almiDeustoLocation = new LatLng(43.2687, -2.9460);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,7 +90,9 @@ public class StoresFragment extends Fragment implements OnMapReadyCallback {
         this.googleMap = googleMap;
         googleMap.getUiSettings().setZoomControlsEnabled(true);
 
-        userLocation = sanIgnacioLocation;
+        userLocation = almiDeustoLocation;
+        googleMap.addMarker(new MarkerOptions().position(userLocation).title("Centro de Estudios Almi (Deusto)"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f));
         googleMap.addMarker(new MarkerOptions().position(userLocation).title("Ubicación inicial (San Ignacio)"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f));
 

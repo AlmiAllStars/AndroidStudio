@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +35,7 @@ public class ProductDetailFragment extends Fragment {
     private Product currentProduct;
     private static final String ARG_PRODUCT_ID = "productId";
     private String productId;
+    private boolean animate = false;
 
     public static ProductDetailFragment newInstance(String productId) {
         ProductDetailFragment fragment = new ProductDetailFragment();
@@ -40,6 +43,10 @@ public class ProductDetailFragment extends Fragment {
         args.putString(ARG_PRODUCT_ID, productId);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void setAnimate(boolean animate) {
+        this.animate = animate;
     }
 
     @Override
@@ -54,6 +61,10 @@ public class ProductDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_detail, container, false);
+        if (animate) {
+            Animation scaleAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.scale_animation);
+            view.startAnimation(scaleAnimation); // Aplica la animación solo si se especificó
+        }
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         ImageView productImage = view.findViewById(R.id.product_image);
@@ -119,6 +130,9 @@ public class ProductDetailFragment extends Fragment {
                 carritoService.agregarAlCarrito(carritoItem);
 
                 Toast.makeText(getContext(), "Producto añadido al carrito", Toast.LENGTH_SHORT).show();
+
+                // Cerrar el fragmento después de añadir al carrito
+                requireActivity().getSupportFragmentManager().popBackStackImmediate();
             } else {
                 Toast.makeText(getContext(), "Cargando producto. Inténtalo de nuevo.", Toast.LENGTH_SHORT).show();
             }

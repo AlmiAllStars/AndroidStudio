@@ -1,22 +1,38 @@
 package com.almi.juegaalmiapp.fragmentos;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.almi.juegaalmiapp.R;
+import com.almi.juegaalmiapp.adaptadores.ActiveRepairsAdapter;
 import com.almi.juegaalmiapp.adaptadores.ReparationsAdapter;
+import com.almi.juegaalmiapp.modelo.ActiveReparation;
 import com.almi.juegaalmiapp.modelo.ReparationItem;
+import com.almi.juegaalmiapp.ApiClient;
+import com.almi.juegaalmiapp.ApiService;
+import com.almi.juegaalmiapp.ClienteService;
 import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReparationsFragment extends Fragment implements ReparationsAdapter.OnItemSelectListener {
 
@@ -27,11 +43,15 @@ public class ReparationsFragment extends Fragment implements ReparationsAdapter.
     private View layoutSelectorModelo;
     private Spinner spinnerModelSelection;
     private ViewGroup containerDetallesReparacion;
+    private RecyclerView recyclerViewActiveRepairs;
+    private ActiveRepairsAdapter activeRepairsAdapter;
+    private ClienteService clienteServicio;
+    private Button btnSolicitarReparacion;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reparations, container, false);
-
+        clienteServicio = new ClienteService(getContext());
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         recyclerView = view.findViewById(R.id.recycler_view_reparations);
         layoutSelectorModelo = view.findViewById(R.id.layout_selector_modelo);
@@ -39,6 +59,11 @@ public class ReparationsFragment extends Fragment implements ReparationsAdapter.
         containerDetallesReparacion = view.findViewById(R.id.container_detalles_reparacion);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        recyclerViewActiveRepairs = view.findViewById(R.id.recycler_view_active_repairs);
+        recyclerViewActiveRepairs.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        fetchActiveRepairs();
 
         tabLayout.addTab(tabLayout.newTab().setText("CONSOLAS"));
         tabLayout.addTab(tabLayout.newTab().setText("DISPOSITIVOS"));
@@ -83,6 +108,58 @@ public class ReparationsFragment extends Fragment implements ReparationsAdapter.
         deviceRepairs.add(new ReparationItem("Tablets", R.drawable.device04));
         deviceRepairs.add(new ReparationItem("Portátiles", R.drawable.device04));
     }
+
+    private void fetchActiveRepairs() {
+        String token = "Bearer " + clienteServicio.getToken();
+
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        apiService.obtenerReparacionesActivas(token).enqueue(new Callback<List<ActiveReparation>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<ActiveReparation>> call, @NonNull Response<List<ActiveReparation>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<ActiveReparation> activeRepairs = response.body();
+                    activeRepairsAdapter = new ActiveRepairsAdapter(activeRepairs, getContext());
+                    recyclerViewActiveRepairs.setAdapter(activeRepairsAdapter);
+                } else {
+                    Log.e("ReparationsFragment", "Error en la respuesta: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<ActiveReparation>> call, @NonNull Throwable t) {
+                Log.e("ReparationsFragment", "Fallo en la llamada: " + t.getMessage());
+            }
+        });
+    }
+    private void enviarReparacion(String detalleProblema) {
+        // Crear el cuerpo de la solicitud
+        Map<String, String> reparacionData = new HashMap<>();
+        reparacionData.put("description", detalleProblema);
+
+        // Obtener el token desde ClienteService
+        String token = "Bearer " + clienteServicio.getToken();
+
+        // Llamada Retrofit para crear la reparación
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        apiService.crearReparacion(token, reparacionData).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("ReparationsFragment", "Reparación creada exitosamente.");
+                    // Recargar la lista de reparaciones activas
+                    fetchActiveRepairs();
+                } else {
+                    Log.e("ReparationsFragment", "Error al crear reparación: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                Log.e("ReparationsFragment", "Fallo en la red: " + t.getMessage());
+            }
+        });
+    }
+
 
     @Override
     public void onItemSelected(ReparationItem item) {
@@ -131,6 +208,7 @@ public class ReparationsFragment extends Fragment implements ReparationsAdapter.
                     containerDetallesReparacion.removeAllViews();
                     containerDetallesReparacion.addView(detallesReparacionView);
                     containerDetallesReparacion.setVisibility(View.VISIBLE);
+                    Button btnSolicitarReparacion = detallesReparacionView.findViewById(R.id.btn_enviar_reparacion);
 
                     Spinner spinnerGravedad = detallesReparacionView.findViewById(R.id.spinner_gravedad);
                     List<String> opcionesGravedad = new ArrayList<>();
@@ -142,6 +220,16 @@ public class ReparationsFragment extends Fragment implements ReparationsAdapter.
                     ArrayAdapter<String> gravedadAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, opcionesGravedad);
                     gravedadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerGravedad.setAdapter(gravedadAdapter);
+
+                    EditText detalleProblemaInput = detallesReparacionView.findViewById(R.id.et_descripcion_problema);
+                    btnSolicitarReparacion.setOnClickListener(v -> {
+                        String detalleProblema = detalleProblemaInput.getText().toString();
+                        if (!detalleProblema.isEmpty()) {
+                            enviarReparacion(detalleProblema);
+                        } else {
+                            Toast.makeText(getContext(), "Por favor, describe el problema.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
                     spinnerGravedad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
@@ -157,5 +245,7 @@ public class ReparationsFragment extends Fragment implements ReparationsAdapter.
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
+
+
     }
 }

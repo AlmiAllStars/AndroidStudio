@@ -74,7 +74,7 @@ public class LoginDialogFragment extends DialogFragment {
                 getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                 int height = displayMetrics.heightPixels;
                 int width = displayMetrics.widthPixels;
-                window.setLayout(width, (int) (height * 0.68));
+                window.setLayout(width, (int) (height * 0.75));
             }
         }
     }
