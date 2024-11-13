@@ -18,7 +18,7 @@ public class Client {
     private float longitude;
 
     // Constructor
-    public Client(String name, String surname, String email,String phone) {
+    public Client(String name, String surname, String email) {
         this.name = name;
         this.surname = surname;
         this.email = email;

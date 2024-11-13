@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import com.almi.juegaalmiapp.ApiClient;
 import com.almi.juegaalmiapp.ApiService;
 import com.almi.juegaalmiapp.CarritoService;
+import com.almi.juegaalmiapp.ClienteService;
 import com.almi.juegaalmiapp.R;
 import com.almi.juegaalmiapp.modelo.CarritoItem;
 import com.almi.juegaalmiapp.modelo.Product;
@@ -36,6 +37,8 @@ public class ProductDetailFragment extends Fragment {
     private static final String ARG_PRODUCT_ID = "productId";
     private String productId;
     private boolean animate = false;
+    private ClienteService clienteService;
+    private Button buyButton;
 
     public static ProductDetailFragment newInstance(String productId) {
         ProductDetailFragment fragment = new ProductDetailFragment();
@@ -73,7 +76,12 @@ public class ProductDetailFragment extends Fragment {
         TextView buyPriceText = view.findViewById(R.id.buy_price);
         TextView tryPriceText = view.findViewById(R.id.try_price);
         Button wishlistButton = view.findViewById(R.id.wishlist_button);
-        Button buyButton = view.findViewById(R.id.buy_button);
+        wishlistButton.setVisibility(View.GONE); // Ocultar el botón de lista de deseos
+        buyButton = view.findViewById(R.id.buy_button);
+        clienteService = new ClienteService(requireContext()); // Crear instancia con el contexto
+
+        // Actualiza el estado del botón según el estado de inicio de sesión
+        updateButtonState();
         Button tryButton = view.findViewById(R.id.try_button);
 
         if (getActivity() != null) {
@@ -169,6 +177,8 @@ public class ProductDetailFragment extends Fragment {
         return view;
     }
 
+
+
     private void loadProductDetails(String productId, final ProductCallback callback) {
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         apiService.getProductById(productId).enqueue(new Callback<Product>() {
@@ -186,6 +196,17 @@ public class ProductDetailFragment extends Fragment {
                 Log.e("ProductDetailFragment", "Failure: " + t.getMessage());
             }
         });
+    }
+
+    private void updateButtonState() {
+        boolean isLoggedIn = isUserLoggedIn();
+        buyButton.setEnabled(isLoggedIn); // Habilitar o deshabilitar el botón
+        buyButton.setAlpha(isLoggedIn ? 1.0f : 0.5f); // Cambiar opacidad para un feedback visual
+    }
+
+    private boolean isUserLoggedIn() {
+        // Verifica si hay un cliente o un token válido almacenado
+        return clienteService.sharedPreferences.getBoolean("isLoggedIn", false);
     }
 
     private void populateDynamicContent(Product product) {

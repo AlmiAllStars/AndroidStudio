@@ -19,7 +19,7 @@ public class ClienteService {
     private static final String CLIENT_PREFS = "UserPrefs";
     private static final String CLIENT_KEY = "clientData";
 
-    private final SharedPreferences sharedPreferences;
+    public final SharedPreferences sharedPreferences;
     private final ApiService apiService = ApiClient.getClient().create(ApiService.class);
 
     public ClienteService(Context context) {

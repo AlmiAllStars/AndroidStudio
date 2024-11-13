@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:text="MOSTRAR RUTA"
             android:textAllCaps="true"
-            android:backgroundTint="@android:color/holo_blue_light"
+            android:backgroundTint="@android:color/holo_blue_dark"
             android:textColor="@android:color/white"
             android:layout_margin="16dp" />
 

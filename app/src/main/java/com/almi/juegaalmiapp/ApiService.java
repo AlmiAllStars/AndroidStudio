@@ -2,13 +2,16 @@ package com.almi.juegaalmiapp;
 
 import com.almi.juegaalmiapp.modelo.ActiveReparation;
 import com.almi.juegaalmiapp.modelo.Client;
+import com.almi.juegaalmiapp.modelo.ClientResponse2;
 import com.almi.juegaalmiapp.modelo.Pedido;
 import com.almi.juegaalmiapp.modelo.Product;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -21,9 +24,12 @@ import retrofit2.http.Path;
 
 public interface ApiService {
 
-    // Método para registrar un cliente
+
     @POST("register")
-    Call<ClientResponse> registerClient(@Body Client client);
+    Call<ClientResponse2> registerClient(@Body Map<String, Object> body);
+
+
+
 
     @POST("secure/clientbyEmail")
     Call<Client> getClientById(

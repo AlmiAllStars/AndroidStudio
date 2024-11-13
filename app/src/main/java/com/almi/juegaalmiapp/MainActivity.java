@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements LoginDialogFragme
         iconProfile = findViewById(R.id.icon_profile);
         iconCart = findViewById(R.id.icon_cart);
         iconNotifications = findViewById(R.id.icon_notifications);
+        iconNotifications.setVisibility(View.GONE);
 
         sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
@@ -278,10 +279,8 @@ public class MainActivity extends AppCompatActivity implements LoginDialogFragme
     private void updateUI(boolean isLoggedIn) {
         if (isLoggedIn) {
             iconCart.setVisibility(View.VISIBLE);
-            iconNotifications.setVisibility(View.VISIBLE);
         } else {
             iconCart.setVisibility(View.GONE);
-            iconNotifications.setVisibility(View.GONE);
         }
     }
 
@@ -291,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements LoginDialogFragme
         View menuView = LayoutInflater.from(this).inflate(R.layout.menu_user, null);
         PopupWindow popupWindow = new PopupWindow(menuView,
                 (int) (getResources().getDisplayMetrics().widthPixels * 0.85),
-                (int) (getResources().getDisplayMetrics().heightPixels * 0.70),
+                (int) (getResources().getDisplayMetrics().heightPixels * 0.55),
                 true);
 
         TextView userNameTextView = menuView.findViewById(R.id.user_name);
@@ -304,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements LoginDialogFragme
 
         sharedViewModel.getEmail().observe(this, userEmailTextView::setText);
 
-        popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 20);
 
         ImageButton closeButton = menuView.findViewById(R.id.close_menu_button);
         closeButton.setOnClickListener(v -> popupWindow.dismiss());

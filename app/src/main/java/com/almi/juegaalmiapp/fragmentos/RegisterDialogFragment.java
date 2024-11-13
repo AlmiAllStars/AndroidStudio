@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,13 @@ import com.almi.juegaalmiapp.ApiService;
 import com.almi.juegaalmiapp.ClientResponse;
 import com.almi.juegaalmiapp.R;
 import com.almi.juegaalmiapp.modelo.Client;
+import com.almi.juegaalmiapp.modelo.ClientResponse2;
 import com.almi.juegaalmiapp.viewmodel.SharedViewModel;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,6 +42,7 @@ public class RegisterDialogFragment extends DialogFragment {
     private EditText confirmPasswordEditText;
     private EditText phoneEditText; // Campo para el teléfono
     private SharedViewModel sharedViewModel;
+    private Button registerButton;
 
     @NonNull
     @Override
@@ -56,9 +64,8 @@ public class RegisterDialogFragment extends DialogFragment {
         emailEditText = view.findViewById(R.id.edit_text_email);
         passwordEditText = view.findViewById(R.id.edit_text_password);
         confirmPasswordEditText = view.findViewById(R.id.edit_text_confirm_password);
-        phoneEditText = view.findViewById(R.id.edit_text_phone);  // Campo de teléfono
 
-        Button registerButton = view.findViewById(R.id.button_register);
+        registerButton = view.findViewById(R.id.button_register);
         registerButton.setOnClickListener(v -> handleRegister());
 
         return view;
@@ -70,10 +77,9 @@ public class RegisterDialogFragment extends DialogFragment {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
-        String phoneStr = phoneEditText.getText().toString().trim();  // Obtener teléfono como String
 
         // Verificar que los campos no estén vacíos
-        if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || phoneStr.isEmpty()) {
+        if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             Toast.makeText(getContext(), "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -83,50 +89,62 @@ public class RegisterDialogFragment extends DialogFragment {
             Toast.makeText(getContext(), "Las contraseñas no coinciden.", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Convertir teléfono a int
-  // Convertir de String a int
-
         // Crear el objeto Client
-        Client newClient = new Client(name, surname, email, phoneStr);
+        Client newClient = new Client(name, surname, email);
 
         // Crear la solicitud Retrofit
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        Call<ClientResponse> call = apiService.registerClient(newClient);
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("name", name);
+        requestBody.put("surname", surname);
+        requestBody.put("email", email);
+        requestBody.put("password", password);
+
+        Call<ClientResponse2> call = apiService.registerClient(requestBody);
 
         // Enviar la solicitud
-        call.enqueue(new Callback<ClientResponse>() {
+        call.enqueue(new Callback<ClientResponse2>() {
             @Override
-            public void onResponse(Call<ClientResponse> call, Response<ClientResponse> response) {
+            public void onResponse(Call<ClientResponse2> call, Response<ClientResponse2> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Client registeredClient = response.body().getClient();
-
-                    // Guardar datos del cliente en SharedPreferences
-                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("email", registeredClient.getEmail());
-                    editor.putString("name", registeredClient.getName());
-                    editor.putString("surname", registeredClient.getSurname());
-                    editor.putBoolean("isLoggedIn", true);
-                    editor.apply();
-
-                    // Actualizar el SharedViewModel
-                    sharedViewModel.setName(registeredClient.getName());
-                    sharedViewModel.setSurname(registeredClient.getSurname());
-                    sharedViewModel.setEmail(registeredClient.getEmail());
-
-                    // Mostrar mensaje de éxito
-                    Toast.makeText(getContext(), "Cuenta creada con éxito.", Toast.LENGTH_SHORT).show();
-                    dismiss();
+                    // Manejar respuesta exitosa
+                    ClientResponse2 clientResponse = response.body();
+                    if (clientResponse.isSuccess()) {
+                        Log.d("RegisterClient", "Registro exitoso");
+                        Toast.makeText(getContext(), "Registro y login exitosos", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Manejar errores de lógica de negocio desde el servidor
+                        String error = clientResponse.getError() != null ? clientResponse.getError() : "Error desconocido";
+                        Toast.makeText(getContext(), "Usuario Registrado: " + error, Toast.LENGTH_SHORT).show();
+                        // Cerrar el diálogo
+                        dismiss();
+                    }
+                } else {
+                    // Manejar errores del servidor (códigos 4xx o 5xx)
+                    String errorMessage = "Error en el registro";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorMessage = response.errorBody().string(); // Leer mensaje del error si está disponible
+                        }
+                    } catch (IOException e) {
+                        Log.e("RegisterClient", "Error al leer el cuerpo de la respuesta de error", e);
+                    }
+                    Toast.makeText(getContext(), "Fallo en el registro: " + errorMessage, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ClientResponse> call, Throwable t) {
-                // Mostrar mensaje de error en caso de fallo en la conexión
-                Toast.makeText(getContext(), "Error de conexión. Intenta más tarde.", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ClientResponse2> call, Throwable t) {
+                // Manejar errores de red o excepciones
+                Log.e("RegisterClient", "Error de red o de conexión", t);
+                String error = t instanceof IOException
+                        ? "Error de red, verifica tu conexión"
+                        : "Error desconocido, contacta al soporte";
+                Toast.makeText(getContext(), "Error en el registro: " + error, Toast.LENGTH_LONG).show();
             }
         });
+
+
     }
     @Override
     public void onStart() {

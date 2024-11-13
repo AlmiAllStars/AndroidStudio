@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.almi.juegaalmiapp.modelo.Client;
+
 public class SharedViewModel extends ViewModel {
     private final MutableLiveData<String> name = new MutableLiveData<>();
     private final MutableLiveData<String> surname = new MutableLiveData<>();
@@ -69,5 +71,24 @@ public class SharedViewModel extends ViewModel {
 
     public void setPassword(String newPassword) {
         password.setValue(newPassword);
+    }
+
+    public void clearData() {
+        name.setValue("");
+        surname.setValue("");
+        email.setValue("");
+        phone.setValue("");
+        address.setValue("");
+        postalCode.setValue("");
+        password.setValue("");
+    }
+
+    public void setClient(Client client) {
+        name.setValue(client.getName());
+        surname.setValue(client.getSurname());
+        email.setValue(client.getEmail());
+        phone.setValue(client.getPhone());
+        address.setValue(client.getAddress());
+        postalCode.setValue(String.valueOf(client.getPostal_code()));
     }
 }

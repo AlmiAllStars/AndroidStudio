@@ -151,6 +151,8 @@ public class LoginDialogFragment extends DialogFragment {
                                     client.setEmail(email);
                                     ClienteService clienteService = new ClienteService(getContext());
                                     clienteService.saveClient(client);  // Guardar cliente en SharedPreferences
+                                    // Guardamos tambien todos los datos en el SharedViewModel
+                                    sharedViewModel.setClient(client);
                                     editor.putBoolean("isLoggedIn", true);
                                     editor.apply();
                                     // Parsear el JSON del carrito

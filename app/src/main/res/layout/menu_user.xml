@@ -6,6 +6,7 @@
     android:padding="16dp"
     android:background="@android:color/white">
 
+    <!-- Encabezado con botón cerrar y logo -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,6 +32,7 @@
             android:layout_marginLeft="65dp" />
     </LinearLayout>
 
+    <!-- Sección de usuario -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,7 +49,7 @@
             android:background="@drawable/rounded_logo"
             android:scaleType="centerCrop"
             android:clipToOutline="true"
-            android:contentDescription="Ícono usuario"/>
+            android:contentDescription="Ícono usuario" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -75,7 +77,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Opciones del menú -->
+    <!-- Botón Gestionar Cuenta -->
     <LinearLayout
         android:id="@+id/button_account"
         android:layout_width="match_parent"
@@ -105,35 +107,7 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray" />
 
-    <LinearLayout
-        android:id="@+id/button_wishlist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:clickable="true"
-        android:focusable="true">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/corazon"
-            android:contentDescription="Icono de lista de deseos"
-            android:layout_marginEnd="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lista de Deseos"
-            android:textSize="18sp"
-            android:textColor="@android:color/black" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
-
+    <!-- Botón Mis Pedidos -->
     <LinearLayout
         android:id="@+id/button_orders"
         android:layout_width="match_parent"
@@ -163,35 +137,7 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray" />
 
-    <LinearLayout
-        android:id="@+id/button_notifications"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:clickable="true"
-        android:focusable="true">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/campana"
-            android:contentDescription="Icono de configurar notificaciones"
-            android:layout_marginEnd="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Configurar Notificaciones"
-            android:textSize="18sp"
-            android:textColor="@android:color/black" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
-
+    <!-- Botón Quiero darme de baja -->
     <LinearLayout
         android:id="@+id/button_unsuscribe"
         android:layout_width="match_parent"
@@ -221,27 +167,28 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray" />
 
+    <!-- Botón Lista de Deseos (invisible) -->
     <LinearLayout
-        android:layout_marginTop="25dp"
-        android:id="@+id/button_logout"
+        android:id="@+id/button_wishlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
+        android:visibility="gone"
         android:clickable="true"
         android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/carrito"
-            android:contentDescription="Icono de cerrar sesión"
+            android:src="@drawable/corazon"
+            android:contentDescription="Icono de lista de deseos"
             android:layout_marginEnd="8dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cerrar Sesión"
+            android:text="Lista de Deseos"
             android:textSize="18sp"
             android:textColor="@android:color/black" />
     </LinearLayout>
@@ -250,4 +197,71 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray" />
+
+    <!-- Botón Configurar Notificaciones (invisible) -->
+    <LinearLayout
+        android:id="@+id/button_notifications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/campana"
+            android:contentDescription="Icono de configurar notificaciones"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Configurar Notificaciones"
+            android:textSize="18sp"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <!-- Botón Cerrar Sesión -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="70dp" />
+
+    <LinearLayout
+        android:id="@+id/button_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Icono de cerrar sesión"
+            android:src="@drawable/carrito" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cerrar Sesión"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
 </LinearLayout>
