@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private static final String BASE_URL = "https://juegalmiapp.duckdns.org/juegalmi/ws/";
+    private static final String BASE_URL = "https://retodalmi.duckdns.org/juegalmi/ws/";
 
     private static Retrofit retrofit;
 

@@ -79,7 +79,7 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.PedidoView
                     urlImagen = pedido.getOperations().get(0).getProduct().getPicture();
                 }
                 Glide.with(itemView.getContext())
-                        .load("https://juegalmiapp.duckdns.org/" + urlImagen) // Asegúrate de usar Glide para cargar imágenes
+                        .load("https://retodalmi.duckdns.org/" + urlImagen) // Asegúrate de usar Glide para cargar imágenes
                         .placeholder(R.drawable.bioshock) // Imagen mientras carga
                         .error(R.drawable.bioshock) // Imagen en caso de error
                         .into(imagenProducto); // Tu ImageView

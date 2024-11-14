@@ -53,7 +53,7 @@ public interface ApiService {
     Call<List<ActiveReparation>> obtenerReparacionesActivas(@Header("Authorization") String token);
 
     // Metodo para hacer login, enviando email y password
-    @POST("https://juegalmiapp.duckdns.org/api/login")
+    @POST("https://retodalmi.duckdns.org/api/login")
     Call<ClientResponse> loginClient(@Body LoginRequest loginRequest);
 
     @GET("product/{id}")

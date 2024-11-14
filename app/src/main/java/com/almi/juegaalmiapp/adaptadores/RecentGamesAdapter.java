@@ -42,7 +42,7 @@ public class RecentGamesAdapter extends RecyclerView.Adapter<RecentGamesAdapter.
 
         // Cargar la imagen del juego reciente usando Glide
         Glide.with(context)
-                .load("https://juegalmiapp.duckdns.org" + game.getPicture())
+                .load("https://retodalmi.duckdns.org" + game.getPicture())
                 .placeholder(R.drawable.bioshock) // Imagen de respaldo
                 .into(holder.gameImageView);
 

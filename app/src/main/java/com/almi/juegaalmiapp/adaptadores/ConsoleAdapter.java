@@ -38,7 +38,7 @@ public class ConsoleAdapter extends RecyclerView.Adapter<ConsoleAdapter.ConsoleV
         holder.descriptionTextView.setText(console.getDescription());
 
         Glide.with(context)
-                .load("https://juegalmiapp.duckdns.org" + console.getPicture())
+                .load("https://retodalmi.duckdns.org" + console.getPicture())
                 .placeholder(R.drawable.consola06)  // Imagen de placeholder predeterminada
                 .into(holder.consoleImageView);
 

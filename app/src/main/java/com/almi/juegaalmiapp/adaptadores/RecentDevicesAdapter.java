@@ -42,7 +42,7 @@
             holder.deviceDescription.setText(device.getDescription());
 
             Glide.with(context)
-                    .load("https://juegalmiapp.duckdns.org" + device.getPicture())
+                    .load("https://retodalmi.duckdns.org" + device.getPicture())
                     .placeholder(R.drawable.device04)
                     .into(holder.deviceImage);
 

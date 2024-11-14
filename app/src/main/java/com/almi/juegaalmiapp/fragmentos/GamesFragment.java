@@ -167,7 +167,7 @@ public class GamesFragment extends Fragment {
 
 
     private void fetchGames() {
-        String url = "https://juegalmiapp.duckdns.org/juegalmi/ws/videogames";
+        String url = "https://retodalmi.duckdns.org/juegalmi/ws/videogames";
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,

@@ -63,7 +63,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.quantity.setText(item.getCantidad() + " ud.");
 
         // Cargar imagen usando Glide o similar si es necesario
-        Glide.with(holder.image.getContext()).load("https://juegalmiapp.duckdns.org" + item.getPicture()).into(holder.image);
+        Glide.with(holder.image.getContext()).load("https://retodalmi.duckdns.org" + item.getPicture()).into(holder.image);
 
         holder.image.setOnClickListener(v -> {
             String productId = String.valueOf(item.getId()); // Obtener el ID del producto

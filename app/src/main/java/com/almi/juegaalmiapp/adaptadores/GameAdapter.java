@@ -39,7 +39,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
         holder.priceTextView.setText("€" + game.getPrice());
 
         Glide.with(context)
-                .load("https://juegalmiapp.duckdns.org" + game.getPicture())
+                .load("https://retodalmi.duckdns.org" + game.getPicture())
                 .placeholder(R.drawable.bioshock)
                 .into(holder.gameImageView);
 

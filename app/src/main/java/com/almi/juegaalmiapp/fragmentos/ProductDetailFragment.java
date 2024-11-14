@@ -39,6 +39,7 @@ public class ProductDetailFragment extends Fragment {
     private boolean animate = false;
     private ClienteService clienteService;
     private Button buyButton;
+    private Button tryButton;
 
     public static ProductDetailFragment newInstance(String productId) {
         ProductDetailFragment fragment = new ProductDetailFragment();
@@ -78,11 +79,12 @@ public class ProductDetailFragment extends Fragment {
         Button wishlistButton = view.findViewById(R.id.wishlist_button);
         wishlistButton.setVisibility(View.GONE); // Ocultar el botón de lista de deseos
         buyButton = view.findViewById(R.id.buy_button);
+        tryButton = view.findViewById(R.id.try_button);
         clienteService = new ClienteService(requireContext()); // Crear instancia con el contexto
 
         // Actualiza el estado del botón según el estado de inicio de sesión
         updateButtonState();
-        Button tryButton = view.findViewById(R.id.try_button);
+
 
         if (getActivity() != null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -110,7 +112,7 @@ public class ProductDetailFragment extends Fragment {
                 toolbarTitle.setSelected(true);
             }
 
-            String imageUrl = "https://juegalmiapp.duckdns.org" + product.getPicture();
+            String imageUrl = "https://retodalmi.duckdns.org" + product.getPicture();
             Glide.with(requireContext())
                     .load(imageUrl)
                     .placeholder(R.drawable.bioshock)
@@ -201,7 +203,9 @@ public class ProductDetailFragment extends Fragment {
     private void updateButtonState() {
         boolean isLoggedIn = isUserLoggedIn();
         buyButton.setEnabled(isLoggedIn); // Habilitar o deshabilitar el botón
+        tryButton.setEnabled(isLoggedIn); // Habilitar o deshabilitar el botón
         buyButton.setAlpha(isLoggedIn ? 1.0f : 0.5f); // Cambiar opacidad para un feedback visual
+        tryButton.setAlpha(isLoggedIn ? 1.0f : 0.5f);
     }
 
     private boolean isUserLoggedIn() {

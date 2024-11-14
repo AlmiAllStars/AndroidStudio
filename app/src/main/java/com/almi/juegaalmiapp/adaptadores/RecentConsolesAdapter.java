@@ -42,7 +42,7 @@ public class RecentConsolesAdapter extends RecyclerView.Adapter<RecentConsolesAd
         holder.consoleDescription.setText(console.getDescription());
 
         Glide.with(context)
-                .load("https://juegalmiapp.duckdns.org" + console.getPicture())
+                .load("https://retodalmi.duckdns.org" + console.getPicture())
                 .placeholder(R.drawable.consola06) // imagen de placeholder
                 .into(holder.consoleImage);
 

@@ -146,7 +146,7 @@ public class ConsolesFragment extends Fragment {
 
 
     private void fetchConsoles() {
-        String url = "https://juegalmiapp.duckdns.org/juegalmi/ws/consoles";
+        String url = "https://retodalmi.duckdns.org/juegalmi/ws/consoles";
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,

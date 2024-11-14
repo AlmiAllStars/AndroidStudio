@@ -39,7 +39,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         holder.descriptionTextView.setText(device.getDescription());
 
         Glide.with(context)
-                .load("https://juegalmiapp.duckdns.org" + device.getPicture())
+                .load("https://retodalmi.duckdns.org" + device.getPicture())
                 .placeholder(R.drawable.device04) // Imagen por defecto
                 .into(holder.deviceImageView);
 
